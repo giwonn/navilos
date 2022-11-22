@@ -1,12 +1,12 @@
 # docker compose -f docker-compose.yml up --build -d
 # docker compose -f docker-compose.yml down -v
 
-# docker exec -it container bash
+# docker exec -it navilos-container bash
 version: '1.0'
 
 services:
   navilos:
-    container_name: container
+    container_name: navilos-container
     image: navilos
     tty: true
     privileged: true
@@ -15,7 +15,10 @@ services:
       - '9999:9999'
     volumes:
       - '.:/app'
-      - 'volume:/app'
+#       - 'volume:/app'
 
-volumes:
-  volume:
+# volumes:
+#   volume:
+
+# 주석은 실제 배포할 시에 제거하면 됨
+# 주석 제거하면 dockerfile, docker-compose 파일이 컨테이너로 올라갈 때 제거됨
