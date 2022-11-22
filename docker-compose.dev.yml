@@ -1,0 +1,17 @@
+# docker compose -f docker-compose.dev.yml up --build -d
+# docker compose -f docker-compose.dev.yml down -v
+
+# docker exec -it navilos-container bash
+version: '1.0'
+
+services:
+  navilos:
+    container_name: navilos-container
+    image: navilos
+    tty: true
+    privileged: true
+    build: .
+    ports:
+      - '9999:9999'
+    volumes:
+      - '.:/app'
