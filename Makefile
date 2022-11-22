@@ -2,7 +2,7 @@ ARCH = armv7-a  # 아키텍처
 MCPU = cortex-a8  # CPU
 
 CC = arm-none-eabi-gcc
-AS = arm-none-eabi-AS
+AS = arm-none-eabi-as
 LD = arm-none-eabi-ld
 OC = arm-none-eabi-objcopy
 
