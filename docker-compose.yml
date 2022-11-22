@@ -1,7 +1,7 @@
 # docker compose -f docker-compose.yml up --build -d
 # docker compose -f docker-compose.yml down -v
 
-# docker exec -it navilos bash
+# docker exec -it container bash
 version: '1.0'
 
 services:
