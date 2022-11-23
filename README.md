@@ -4,7 +4,7 @@
 ## 개발환경 접속 방법
 1. docker-compose로 container 생성
 ```bash
-docker compose -f docker-compose.dev.yml up --build -d
+docker compose -f docker-compose.yml up --build -d
 ```
 2. 생성한 container에 접근
 ```bash
@@ -13,7 +13,7 @@ docker exec -it navilos-container bash
 
 ## 개발환경 컨테이너 삭제
 ```bash
-docker compose -f docker-compose.dev.yml down -v
+docker compose -f docker-compose.yml down -v
 ```
 
 ## 구조
