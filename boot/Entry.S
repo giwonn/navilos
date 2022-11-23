@@ -1,17 +1,70 @@
+#include "ARMv7AR.h"
+#include "MemoryMap.h"
+
 .text
-  .code 32
+    .code 32
 
-  /* .global = export와 같은 역할 */
-  .global vector_start
-  .global vector_end
+    .global vector_start
+    .global vector_end
 
-  
-  vector_start:
-    @ MOV    R0, R1  /* MOVE R1 -> R0 (R1 레지스터의 값을 R0에 넣음) */
-    LDR R0, =0x10000000  /* R0에 0x10000000이라는 상수를 적재 */
-    LDR R1, [R0]  /* R0에 적재된 값을 메모리주소로 인식하여 해당 메모리주소에서 값을 꺼내어 R1에 적재 */
-    /* 굳이 R0에 담지 않고 LDR R1, [0x10000000]처럼 메모리주소를 직접 참조해도 될까 싶지만, */
-    /* LDR로 메모리 주소의 값을 참조할 때 상수값을 사용할 수 없다. ARM에서의 메모리 참조는 간접 연산만 가능하기 때문! */
-  vector_end:
-    .space 1024, 0  /* 해당 위치부터 1024바이트만큼 0으로 채워라 */
+    vector_start:
+        LDR PC, reset_handler_addr
+        LDR PC, undef_handler_addr
+        LDR PC, svc_handler_addr
+        LDR PC, pftch_abt_handler_addr
+        LDR PC, data_abt_handler_addr
+        B .
+        LDR PC, irq_handler_addr
+        LDR PC, fiq_handler_addr
+
+        reset_handler_addr:     .word reset_handler
+        undef_handler_addr:     .word dummy_handler
+        svc_handler_addr:       .word dummy_handler
+        pftch_abt_handler_addr: .word dummy_handler
+        data_abt_handler_addr:  .word dummy_handler
+        irq_handler_addr:       .word dummy_handler
+        fiq_handler_addr:       .word dummy_handler
+    vector_end:
+
+    reset_handler:
+        MRS R0, cpsr
+        BIC r1, r0, #0x1F @ ~0x1F와 r0을 AND 연산하여 r1에 저장
+        ORR r1, r1, #ARM_MODE_BIT_SVC @ 동작모드를 r1과 OR 비트연산
+        MSR cpsr, r1
+        LDR sp, =SVC_STACK_TOP
+
+        MRS r0, cpsr
+        BIC r1, r0, #0x1F
+        ORR r1, r1, #ARM_MODE_BIT_IRQ
+        MSR cpsr, r1
+        LDR sp, =IRQ_STACK_TOP
+
+        MRS r0, cpsr
+        BIC r1, r0, #0x1F
+        ORR r1, r1, #ARM_MODE_BIT_FIQ
+        MSR cpsr, r1
+        LDR sp, =FIQ_STACK_TOP
+
+        MRS r0, cpsr
+        BIC r1, r0, #0x1F
+        ORR r1, r1, #ARM_MODE_BIT_ABT
+        MSR cpsr, r1
+        LDR sp, =ABT_STACK_TOP
+
+        MRS r0, cpsr
+        BIC r1, r0, #0x1F
+        ORR r1, r1, #ARM_MODE_BIT_UND
+        MSR cpsr, r1
+        LDR sp, =UND_STACK_TOP
+
+        MRS r0, cpsr
+        BIC r1, r0, #0x1F
+        ORR r1, r1, #ARM_MODE_BIT_SYS
+        MSR cpsr, r1
+        LDR sp, =USRSYS_STACK_TOP
+
+        BL main
+
+    dummy_handler:
+        B .
 .end

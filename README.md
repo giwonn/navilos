@@ -16,6 +16,11 @@ docker exec -it navilos-container bash
 docker compose -f docker-compose.dev.yml down -v
 ```
 
+## 구조
+### hal (Hardware Abstraction Layer)
+- `HalUart.h, HalIR.h, ...` : 임베디드 공용 인터페이스
+- `hal/rvpb` : 실제 임베디드 하드웨어
+
 ## qemu-system-arm (가상머신)
 ### 실행법
 ```
