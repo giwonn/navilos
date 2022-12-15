@@ -19,7 +19,7 @@ docker compose -f docker-compose.dev.yml down -v
 ## 구조
 ### hal (Hardware Abstraction Layer)
 - `HalUart.h, HalIR.h, ...` : 임베디드 공용 인터페이스
-- `hal/rvpb` : 실제 임베디드 하드웨어
+- `hal/rvpb` : 실제 임베디드 하드웨어 (인터페이스 include해서 구현체를 만드는 곳)
 
 ## qemu-system-arm (가상머신)
 ### 실행법
